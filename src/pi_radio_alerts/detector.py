@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+from time import monotonic
 
 import numpy as np
 
@@ -132,7 +133,7 @@ class QuickCallDetector:
         if self._active_tone is None:
             return None
 
-        finished_at = now or monotonic()
+        finished_at = monotonic() if now is None else now
         duration_ms = math.ceil((finished_at - self._active_tone.started_at) * 1000)
         segment = ToneSegment(
             frequency_hz=self._active_tone.frequency_hz,
